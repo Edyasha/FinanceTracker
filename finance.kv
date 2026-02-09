@@ -1,0 +1,25 @@
+<MainScreen>:
+    orientation: 'vertical'
+    padding: 20
+    spacing: 10
+
+    Label:
+        text: "Мій менеджер витрат"
+        font_size: 32
+
+    TextInput:
+        id: amount_input
+        hint_text: "Введіть суму"
+        multiline: False
+
+    Button:
+        text: "Зберегти"
+        size_hint_y: None
+        height: 50
+        on_press: root.save_data()
+
+    Button:
+        text: "Показати історію"
+        size_hint_y: None
+        height: 50
+        on_press: root.load_data()
