@@ -1,25 +1,132 @@
 <MainScreen>:
     orientation: 'vertical'
-    padding: 20
+    padding: 10
     spacing: 10
 
-    Label:
-        text: "Мій менеджер витрат"
-        font_size: 32
+    BoxLayout:
+        size_hint_y: None
+        height: "60dp"
+        spacing: 10
+        canvas.before:
+            Color:
+                rgba: 0.15, 0.15, 0.15, 1
+            RoundedRectangle:
+                pos: self.pos
+                size: self.size
+                radius: [10]
+
+        BoxLayout:
+            orientation: "vertical"
+            Label:
+                text: "Дохід"
+            Label:
+                id: monthly_income
+                text: "0"
+
+        BoxLayout:
+            orientation: "vertical"
+            Label:
+                text: "Витрати"
+            Label:
+                id: monthly_expense
+                text: "0"
 
     TextInput:
         id: amount_input
         hint_text: "Введіть суму"
+        size_hint_y: None
+        height: "36dp"
+        font_size: "20sp"
         multiline: False
 
-    Button:
-        text: "Зберегти"
+    BoxLayout:
         size_hint_y: None
-        height: 50
-        on_press: root.save_data()
+        height: "60dp"
+        spacing: 10
+        canvas.before:
+            Color:
+                rgba: 0.15, 0.15, 0.15, 1
+            RoundedRectangle:
+                pos: self.pos
+                size: self.size
+                radius: [10]
 
-    Button:
-        text: "Показати історію"
+        BoxLayout:
+            orientation: "horizontal"
+            spacing: 5
+
+            CheckBox:
+                id: chk_expense
+                size_hint_x: None
+                width: "40dp"
+                group: "type"
+                active: True
+            Label:
+                text: "Витрата"
+                text_size: self.size
+                halign: 'left'
+                valign: 'middle'
+
+        BoxLayout:
+            orientation: "horizontal"
+            spacing: 5
+
+            CheckBox:
+                id: chk_income
+                size_hint_x: None
+                width: "40dp"
+                group: "type"
+            Label:
+                text: "Дохід"
+                text_size: self.size
+                halign: 'left'
+                valign: 'middle'
+
+    BoxLayout:
+        orientation: 'horizontal'
         size_hint_y: None
-        height: 50
-        on_press: root.load_data()
+        height: "60dp"
+
+        Button:
+            text: "Зберегти"
+            size_hint_y: None
+            height: 50
+            on_press: root.save_data()
+
+        Button:
+            text: "Показати історію"
+            size_hint_y: None
+            height: 50
+            on_press: root.load_data()
+
+    BoxLayout:
+        orientation: 'vertical'
+
+        GridLayout:
+            cols: 3
+            size_hint_y: None
+            height: "40dp"
+            canvas.before:
+                Color:
+                    rgba: 0.2, 0.2, 0.2, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            Label:
+                text: "Дата"
+                bold: True
+            Label:
+                text: "Тип"
+                bold: True
+            Label:
+                text: "Сума"
+                bold: True
+
+        ScrollView:
+            GridLayout:
+                id: container
+                cols: 3
+                size_hint_y: None
+                height: self.minimum_height
+                row_default_height: "30dp"
+                row_force_default: True

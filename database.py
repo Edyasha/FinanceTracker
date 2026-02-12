@@ -19,7 +19,7 @@ class TransactionDB:
         ''')
         self.conn.commit()
 
-    def add_transaction(self, amount, t_type="Витрата"):
+    def add_transaction(self, amount, t_type):
         now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         self.cursor.execute('INSERT INTO transactions (amount, date, type) VALUES (?, ?, ?)',
                             (amount, now, t_type))
@@ -30,3 +30,20 @@ class TransactionDB:
         self.cursor.execute('SELECT amount, date, type FROM transactions ORDER BY date DESC')
         rows = self.cursor.fetchall()
         return rows
+
+    def get_monthly_stats(self):
+        current_month = datetime.now().strftime("%Y-%m")
+
+        self.cursor.execute('''
+            SELECT SUM(amount) FROM transactions
+            WHERE type = "Дохід" AND date LIKE?
+        ''', (f"{current_month}%",))
+        total_income = self.cursor.fetchone()[0] or 0
+
+        self.cursor.execute('''
+             SELECT SUM(amount) FROM transactions
+             WHERE type = "Витрата" AND date LIKE?
+        ''', (f"{current_month}%",))
+        total_expense = self.cursor.fetchone()[0] or 0
+
+        return total_income, total_expense
