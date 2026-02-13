@@ -40,6 +40,7 @@
     TextInput:
         id: amount_input
         hint_text: "Введіть суму"
+        input_filter: "float"
         size_hint_y: None
         height: "36dp"
         font_size: "20sp"
@@ -96,7 +97,9 @@
         Button:
             text: "Зберегти"
             size_hint_y: None
-            height: 50
+            size_hint_x: None
+            height: 60
+            width: 160
             on_press: root.save_data()
 
     BoxLayout:

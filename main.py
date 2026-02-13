@@ -3,6 +3,7 @@ from kivy.config import Config
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.clock import Clock
+from kivy.uix.popup import Popup
 
 from database import TransactionDB
 
@@ -20,22 +21,30 @@ class MainScreen(BoxLayout):
 
     def save_data(self):
         raw_data = self.ids.amount_input.text.strip().replace(" ", "")
-
-        try:
-            amount = float(raw_data)
-
-            if self.ids.chk_income.active:
-                transaction_type = "Дохід"
-            else:
-                transaction_type = "Витрата"
-
-            app = App.get_running_app()
-            app.db.add_transaction(amount, transaction_type)
+        popup = Popup(title="Застереження",
+                      content=Label(text="Поле не має бути пустим, \nта містити від'ємні числа!"),
+                      size_hint=(None, None), size=(300, 200), auto_dismiss=True)
+        if raw_data == "":
+            popup.open()
+        elif raw_data and raw_data[0] == "-":
+            popup.open()
             self.ids.amount_input.text = ""
-            self.load_data()
+        else:
+            try:
+                amount = float(raw_data)
 
-        except ValueError:
-            print("Помилка! Введіть будь ласка число!")
+                if self.ids.chk_income.active:
+                    transaction_type = "Дохід"
+                else:
+                    transaction_type = "Витрата"
+
+                app = App.get_running_app()
+                app.db.add_transaction(amount, transaction_type)
+                self.ids.amount_input.text = ""
+                self.load_data()
+
+            except ValueError:
+                self.ids.amount_input.text = ""
 
     def load_data(self):
         app = App.get_running_app()
