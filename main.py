@@ -2,6 +2,7 @@ from kivy.app import App
 from kivy.config import Config
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
+from kivy.clock import Clock
 
 from database import TransactionDB
 
@@ -9,6 +10,14 @@ Config.set("graphics", "width", 420)
 Config.set("graphics", "height", 880)
 
 class MainScreen(BoxLayout):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        # Ми кажемо програмі: "Як тільки з'явиться перша вільна мілісекунда — завантаж дані"
+        Clock.schedule_once(self.deferred_load)
+
+    def deferred_load(self, dt):
+        self.load_data()
+
     def save_data(self):
         raw_data = self.ids.amount_input.text.strip().replace(" ", "")
 
@@ -22,10 +31,8 @@ class MainScreen(BoxLayout):
 
             app = App.get_running_app()
             app.db.add_transaction(amount, transaction_type)
-
-            print(f"Сума: {amount} збережена!")
-            print(self.ids.chk_income.active)
             self.ids.amount_input.text = ""
+            self.load_data()
 
         except ValueError:
             print("Помилка! Введіть будь ласка число!")
@@ -33,6 +40,10 @@ class MainScreen(BoxLayout):
     def load_data(self):
         app = App.get_running_app()
         records = app.db.get_all_transactions()
+        income, expense = app.db.get_monthly_stats()
+
+        self.ids.monthly_income.text = f"{income:,} грн."
+        self.ids.monthly_expense.text = f"{expense:,} грн."
 
         self.ids.container.clear_widgets()
 
@@ -47,8 +58,6 @@ class MainScreen(BoxLayout):
             self.ids.container.add_widget(lbl_date)
             self.ids.container.add_widget(lbl_type)
             self.ids.container.add_widget(lbl_amount)
-
-        print(app.db.get_monthly_stats())
 
 class FinanceApp(App):
     db: TransactionDB

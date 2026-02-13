@@ -18,18 +18,24 @@
         BoxLayout:
             orientation: "vertical"
             Label:
-                text: "Дохід"
+                text: "Дохід (місяць)"
+                color: 0.7, 0.7, 0.7, 1
             Label:
                 id: monthly_income
-                text: "0"
+                text: "0.00 грн."
+                bold: True
+                color: 0, 1, 0, 1
 
         BoxLayout:
             orientation: "vertical"
             Label:
-                text: "Витрати"
+                text: "Витрати (місяць)"
+                color: 0.7, 0.7, 0.7, 1
             Label:
                 id: monthly_expense
-                text: "0"
+                text: "0.00 грн."
+                bold: True
+                color: 1, 0, 0, 1
 
     TextInput:
         id: amount_input
@@ -92,12 +98,6 @@
             size_hint_y: None
             height: 50
             on_press: root.save_data()
-
-        Button:
-            text: "Показати історію"
-            size_hint_y: None
-            height: 50
-            on_press: root.load_data()
 
     BoxLayout:
         orientation: 'vertical'
