@@ -22,8 +22,9 @@ class MainScreen(BoxLayout):
     def save_data(self):
         raw_data = self.ids.amount_input.text.strip().replace(" ", "")
         popup = Popup(title="Застереження",
-                      content=Label(text="Поле не має бути пустим, \nта містити від'ємні числа!"),
-                      size_hint=(None, None), size=(300, 200), auto_dismiss=True)
+                      content=Label(text="Поле не має бути пустим, \nта містити від'ємні числа!",
+                                    halign="center", valign="middle", text_size=(None, None)),
+                      size_hint=(0.8, 0.3), auto_dismiss=True)
         if raw_data == "":
             popup.open()
         elif raw_data and raw_data[0] == "-":

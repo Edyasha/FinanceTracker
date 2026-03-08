@@ -94,13 +94,25 @@
         size_hint_y: None
         height: "60dp"
 
+        Widget:
+            size_hint_x: 0.1
+
         Button:
             text: "Зберегти"
-            size_hint_y: None
-            size_hint_x: None
-            height: 60
-            width: 160
+            size_hint: (0.35, None)
+            height: dp(56)
             on_press: root.save_data()
+
+        Widget:
+            size_hint_x: 0.1
+
+        Button:
+            text: "Видалити"
+            size_hint: (0.35, None)
+            height: dp(56)
+
+        Widget:
+            size_hint_x: 0.1
 
     BoxLayout:
         orientation: 'vertical'
